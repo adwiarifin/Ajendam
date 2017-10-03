@@ -36,8 +36,8 @@ type
     frxPDFExport1: TfrxPDFExport;
     Button8: TButton;
     Button9: TButton;
-    Button10: TButton;
-    Button11: TButton;
+    btnLoad: TButton;
+    btnSearch: TButton;
     cnAjendam: TADOConnection;
     tbVerifikasiUrut: TADOTable;
     DBText2: TDBText;
@@ -72,12 +72,14 @@ type
     tbVerifikasiUrutBulan_Pensiun_Tahun: TIntegerField;
     tbVerifikasiUrutCalcBulanPensiun: TStringField;
     tbVerifikasiUrutCalcKodePangkat: TIntegerField;
+    btnExport: TButton;
+    btnImport: TButton;
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
-    procedure Button10Click(Sender: TObject);
-    procedure Button11Click(Sender: TObject);
+    procedure btnLoadClick(Sender: TObject);
+    procedure btnSearchClick(Sender: TObject);
     procedure dsVerifikasiUrutUpdateData(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -110,7 +112,7 @@ implementation
 uses Unit2;
 {$R *.dfm}
 
-procedure TForm1.Button10Click(Sender: TObject);
+procedure TForm1.btnLoadClick(Sender: TObject);
 begin
   if Button10.Caption = 'Load Data' then
   begin
@@ -122,7 +124,7 @@ begin
   end;
 end;
 
-procedure TForm1.Button11Click(Sender: TObject);
+procedure TForm1.btnSearchClick(Sender: TObject);
 begin
   CloseData;
   Form2.show;

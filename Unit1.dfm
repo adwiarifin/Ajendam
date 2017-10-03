@@ -1449,23 +1449,23 @@ object Form1: TForm1
     Visible = False
     OnClick = Button9Click
   end
-  object Button10: TButton
+  object btnLoad: TButton
     Left = 8
     Top = 239
     Width = 89
     Height = 25
     Caption = 'Load Data'
     TabOrder = 11
-    OnClick = Button10Click
+    OnClick = btnLoadClick
   end
-  object Button11: TButton
+  object btnSearch: TButton
     Left = 103
     Top = 239
     Width = 89
     Height = 25
     Caption = 'Cari Data DBF'
     TabOrder = 12
-    OnClick = Button11Click
+    OnClick = btnSearchClick
   end
   object DBDateEdit1: TDBDateEdit
     Left = 328
@@ -1519,6 +1519,22 @@ object Form1: TForm1
     ListField = 'Nama'
     ListSource = dsBulan
     TabOrder = 17
+  end
+  object btnExport: TButton
+    Left = 198
+    Top = 239
+    Width = 89
+    Height = 25
+    Caption = 'Export Data'
+    TabOrder = 18
+  end
+  object btnImport: TButton
+    Left = 293
+    Top = 239
+    Width = 89
+    Height = 25
+    Caption = 'Import Data'
+    TabOrder = 19
   end
   object dsVerifikasiUrut: TDataSource
     DataSet = tbVerifikasiUrut

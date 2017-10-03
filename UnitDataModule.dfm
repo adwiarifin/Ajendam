@@ -976,12 +976,12 @@ object DataModuleAjendam: TDataModuleAjendam
       'SELECT Count(ID) AS Result'
       'FROM Verifikasi;')
     Left = 16
-    Top = 256
+    Top = 320
   end
   object dsVerCount: TDataSource
     DataSet = qrVerCount
     Left = 80
-    Top = 256
+    Top = 320
   end
   object qrVerInvalid: TADOQuery
     Connection = cnAjendam
@@ -990,14 +990,27 @@ object DataModuleAjendam: TDataModuleAjendam
       'SELECT Count(ID) AS Result'
       'FROM Verifikasi'
       
-        'WHERE Verifikasi.NO_SKEP="" OR Verifikasi.Bulan_Pensiun="" OR Ve' +
-        'rifikasi.Tanggal_Pensiun=#30/12/1899#;')
+        'WHERE NRP="" OR Nama="" OR Kode_Pangkat=0 OR Pangkat="" OR Kesat' +
+        'uan="" OR No_SKEP="" OR Tanggal_Pensiun=#30/12/1899# OR Tanggal_' +
+        'Pensiun_Indonesia="" OR Bulan_Pensiun=" 0" OR Bulan_Pensiun_Bula' +
+        'n=0 OR Bulan_Pensiun_Tahun=0;')
     Left = 16
-    Top = 208
+    Top = 272
   end
   object dsVerInvalid: TDataSource
     DataSet = qrVerInvalid
     Left = 80
-    Top = 208
+    Top = 272
+  end
+  object tbVerHis: TADOTable
+    Connection = cnAjendam
+    TableName = 'VerifikasiHistory'
+    Left = 16
+    Top = 216
+  end
+  object dsVerHis: TDataSource
+    DataSet = tbVerHis
+    Left = 80
+    Top = 216
   end
 end

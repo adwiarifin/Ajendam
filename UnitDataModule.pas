@@ -39,6 +39,8 @@ type
     dsVerCount: TDataSource;
     qrVerInvalid: TADOQuery;
     dsVerInvalid: TDataSource;
+    tbVerHis: TADOTable;
+    dsVerHis: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure tbVerifikasiCalcFields(DataSet: TDataSet);

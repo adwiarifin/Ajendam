@@ -79,12 +79,53 @@ uses UnitCariData, UnitDataModule;
 
 procedure TFormMain.btnExportClick(Sender: TObject);
 var petugas: String;
+    historyID: Integer;
 begin
-  repeat
-    petugas := InputBox('Export Data', 'Masukkan Nama Petugas', '');
-  until petugas <> '';
+  if DataModuleAjendam.tbVerifikasi.Active then
+  begin
+    repeat
+      petugas := InputBox('Export Data', 'Masukkan Nama Petugas', '');
+    until petugas <> '';
 
+    with DataModuleAjendam do
+    begin
+      tbHistory.Open;
+      tbHistory.Insert;
+      tbHistory.FieldValues['petugas'] := petugas;
+      tbHistory.FieldValues['tanggal'] := Now;
+      tbHistory.Post;
+      historyID := tbHistory.FieldByName('ID').AsInteger;
+      tbHistory.Close;
 
+      ShowMessage('new ID: ' + IntToStr(historyID));
+
+      tbVerHis.Open;
+      tbVerifikasi.First;
+      while not tbVerifikasi.Eof do
+      begin
+        tbVerHis.Insert;
+        tbVerHis.FieldValues['History_ID'] := historyID;
+        tbVerHis.FieldValues['NRP'] := tbVerifikasi.FieldByName('NRP').AsString;
+        tbVerHis.FieldValues['Nama'] := tbVerifikasi.FieldByName('Nama').AsString;
+        tbVerHis.FieldValues['Kode_Pangkat'] := tbVerifikasi.FieldByName('Kode_Pangkat').AsInteger;
+        tbVerHis.FieldValues['Pangkat'] := tbVerifikasi.FieldByName('Pangkat').AsString;
+        tbVerHis.FieldValues['Kesatuan'] := tbVerifikasi.FieldByName('Kesatuan').AsString;
+        tbVerHis.FieldValues['No_SKEP'] := tbVerifikasi.FieldByName('No_SKEP').AsString;
+        tbVerHis.FieldValues['Tanggal_Pensiun'] := tbVerifikasi.FieldByName('Tanggal_Pensiun').AsDateTime;
+        tbVerHis.FieldValues['Tanggal_Pensiun_Indonesia'] := tbVerifikasi.FieldByName('Tanggal_Pensiun_Indonesia').AsString;
+        tbVerHis.FieldValues['Bulan_Pensiun'] := tbVerifikasi.FieldByName('Bulan_Pensiun').AsString;
+        tbVerHis.FieldValues['Bulan_Pensiun_Bulan'] := tbVerifikasi.FieldByName('Bulan_Pensiun_Bulan').AsInteger;
+        tbVerHis.FieldValues['Bulan_Pensiun_Tahun'] := tbVerifikasi.FieldByName('Bulan_Pensiun_Tahun').AsInteger;
+        tbVerHis.Post;
+        tbVerifikasi.Next;
+      end;
+      tbVerHis.Close;
+    end;
+  end
+  else
+  begin
+    ShowMessage('Data masih kosong, klik Load Data terlebih dahulu.');
+  end;
 end;
 
 procedure TFormMain.btnLoadClick(Sender: TObject);

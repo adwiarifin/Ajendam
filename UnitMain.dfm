@@ -1540,4 +1540,14 @@ object FormMain: TFormMain
     TabOrder = 19
     OnClick = btnImportClick
   end
+  object btnClear: TButton
+    Left = 388
+    Top = 239
+    Width = 89
+    Height = 25
+    Caption = 'Clear Data'
+    Enabled = False
+    TabOrder = 20
+    OnClick = btnClearClick
+  end
 end

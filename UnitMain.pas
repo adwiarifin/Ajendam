@@ -45,6 +45,7 @@ type
     btnExport: TButton;
     btnImport: TButton;
     DBText1: TDBText;
+    btnClear: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
@@ -56,6 +57,7 @@ type
     procedure btnExportClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnImportClick(Sender: TObject);
+    procedure btnClearClick(Sender: TObject);
   private
     { Private declarations }
     procedure LoadData;
@@ -79,6 +81,18 @@ implementation
 
 uses UnitCariData, UnitDataModule, UnitHistoryChooser;
 {$R *.dfm}
+
+procedure TFormMain.btnClearClick(Sender: TObject);
+begin
+  with DataModuleAjendam do
+  begin
+    tbVerifikasi.First;
+    while not tbVerifikasi.Eof do
+    begin
+      tbVerifikasi.Delete;
+    end;
+  end;
+end;
 
 procedure TFormMain.btnExportClick(Sender: TObject);
 begin
@@ -249,6 +263,7 @@ begin
   btnLoad.Caption := 'Close Data';
   btnExport.Enabled := True;
   btnImport.Enabled := True;
+  btnClear.Enabled := True;
 end;
 
 procedure TFormMain.CloseData;
@@ -266,6 +281,7 @@ begin
   btnLoad.Caption := 'Load Data';
   btnExport.Enabled := False;
   btnImport.Enabled := False;
+  btnClear.Enabled := False;
 end;
 
 procedure TFormMain.UpdateData;

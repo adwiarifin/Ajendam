@@ -7,7 +7,7 @@ uses
   frxExportPDF;
 
 type
-  TDataModule3 = class(TDataModule)
+  TDataModuleAjendam = class(TDataModule)
     frxPDFExport1: TfrxPDFExport;
     frxXLSExport1: TfrxXLSExport;
     frxRTFExport1: TfrxRTFExport;
@@ -44,7 +44,7 @@ type
   end;
 
 var
-  DataModule3: TDataModule3;
+  DataModuleAjendam: TDataModuleAjendam;
 
 implementation
 

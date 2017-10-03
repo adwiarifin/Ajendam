@@ -71,6 +71,7 @@ object FormMain: TFormMain
     Width = 120
     Height = 17
     DataField = 'Tanggal_Pensiun_Indonesia'
+    DataSource = DataModuleAjendam.dsVerifikasi
   end
   object lbInvalid: TLabel
     Left = 606
@@ -85,6 +86,7 @@ object FormMain: TFormMain
     Width = 65
     Height = 17
     DataField = 'Result'
+    DataSource = DataModuleAjendam.dsVerInvalid
   end
   object Label6: TLabel
     Left = 464
@@ -1288,18 +1290,20 @@ object FormMain: TFormMain
     Height = 13
     Caption = 'Jumlah Data: '
   end
-  object Label9: TLabel
-    Left = 80
+  object DBText1: TDBText
+    Left = 72
     Top = 579
-    Width = 31
-    Height = 13
-    Caption = 'Label9'
+    Width = 65
+    Height = 17
+    DataField = 'Result'
+    DataSource = DataModuleAjendam.dsVerCount
   end
   object DBGrid1: TDBGrid
     Left = 8
     Top = 333
     Width = 784
     Height = 243
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -1358,6 +1362,7 @@ object FormMain: TFormMain
     Width = 121
     Height = 21
     DataField = 'NRP'
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 1
   end
   object DBEdit2: TDBEdit
@@ -1366,6 +1371,7 @@ object FormMain: TFormMain
     Width = 121
     Height = 21
     DataField = 'Nama'
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 2
   end
   object DBEdit3: TDBEdit
@@ -1374,6 +1380,7 @@ object FormMain: TFormMain
     Width = 121
     Height = 21
     DataField = 'Pangkat'
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 3
   end
   object DBEdit4: TDBEdit
@@ -1382,6 +1389,7 @@ object FormMain: TFormMain
     Width = 121
     Height = 21
     DataField = 'Kesatuan'
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 4
   end
   object DBEdit5: TDBEdit
@@ -1390,6 +1398,7 @@ object FormMain: TFormMain
     Width = 121
     Height = 21
     DataField = 'No_SKEP'
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 5
   end
   object DBNavigator1: TDBNavigator
@@ -1397,8 +1406,8 @@ object FormMain: TFormMain
     Top = 208
     Width = 440
     Height = 25
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 6
-    OnClick = DBNavigator1Click
   end
   object Button6: TButton
     Left = 710
@@ -1466,6 +1475,7 @@ object FormMain: TFormMain
     Margins.Left = 4
     Margins.Top = 1
     DataField = 'Tanggal_Pensiun'
+    DataSource = DataModuleAjendam.dsVerifikasi
     NumGlyphs = 2
     TabOrder = 13
   end
@@ -1491,10 +1501,11 @@ object FormMain: TFormMain
   end
   object DBEdit6: TDBEdit
     Left = 399
-    Top = 165
+    Top = 168
     Width = 50
     Height = 21
     DataField = 'Bulan_Pensiun_Tahun'
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 16
   end
   object DBLookupComboBox1: TDBLookupComboBox
@@ -1503,8 +1514,10 @@ object FormMain: TFormMain
     Width = 65
     Height = 21
     DataField = 'Bulan_Pensiun_Bulan'
+    DataSource = DataModuleAjendam.dsVerifikasi
     KeyField = 'id'
     ListField = 'Nama'
+    ListSource = DataModuleAjendam.dsBulan
     TabOrder = 17
   end
   object btnExport: TButton

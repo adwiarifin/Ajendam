@@ -31,26 +31,12 @@ object FormCariData: TFormCariData
     Height = 13
     Caption = 'Jumlah Data: '
   end
-  object SourceRecordCount: TLabel
-    Left = 80
-    Top = 556
-    Width = 6
-    Height = 13
-    Caption = '0'
-  end
   object LabelTargetRecordCount: TLabel
     Left = 400
     Top = 556
     Width = 66
     Height = 13
     Caption = 'Jumlah Data: '
-  end
-  object TargetRecordCount: TLabel
-    Left = 472
-    Top = 556
-    Width = 6
-    Height = 13
-    Caption = '0'
   end
   object LabelCariNama: TLabel
     Left = 200
@@ -72,7 +58,7 @@ object FormCariData: TFormCariData
     Width = 65
     Height = 17
     DataField = 'Result'
-    DataSource = dsInvalid
+    DataSource = DataModuleAjendam.dsVerInvalid
   end
   object Label2: TLabel
     Left = 400
@@ -91,6 +77,21 @@ object FormCariData: TFormCariData
     Width = 99
     Height = 13
     Caption = 'Alamat dBase (.DBF)'
+  end
+  object SourceRecordCount: TLabel
+    Left = 76
+    Top = 556
+    Width = 6
+    Height = 13
+    Caption = '0'
+  end
+  object DBText2: TDBText
+    Left = 464
+    Top = 556
+    Width = 65
+    Height = 17
+    DataField = 'Result'
+    DataSource = DataModuleAjendam.dsVerCount
   end
   object edPath: TEdit
     Left = 113
@@ -189,7 +190,7 @@ object FormCariData: TFormCariData
     Top = 131
     Width = 377
     Height = 419
-    DataSource = dsVerifikasi
+    DataSource = DataModuleAjendam.dsVerifikasi
     TabOrder = 7
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -241,50 +242,7 @@ object FormCariData: TFormCariData
   end
   object dsSource: TDataSource
     DataSet = dbfSource
-    OnDataChange = dsSourceDataChange
     Left = 8
-    Top = 8
-  end
-  object dsVerifikasi: TDataSource
-    DataSet = tbVerifikasi
-    OnDataChange = dsVerifikasiDataChange
-    Left = 568
-    Top = 8
-  end
-  object cnAjendam: TADOConnection
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=data\' +
-      'Ajendam.mdb;Mode=Share Deny None;Jet OLEDB:System database="";Je' +
-      't OLEDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLED' +
-      'B:Engine Type=5;Jet OLEDB:Database Locking Mode=1;Jet OLEDB:Glob' +
-      'al Partial Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;Jet O' +
-      'LEDB:New Database Password="";Jet OLEDB:Create System Database=F' +
-      'alse;Jet OLEDB:Encrypt Database=False;Jet OLEDB:Don'#39't Copy Local' +
-      'e on Compact=False;Jet OLEDB:Compact Without Replica Repair=Fals' +
-      'e;Jet OLEDB:SFP=False;'
-    KeepConnection = False
-    LoginPrompt = False
-    Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 456
-    Top = 8
-  end
-  object tbVerifikasi: TADOTable
-    Connection = cnAjendam
-    CursorType = ctStatic
-    TableName = 'Verifikasi'
-    Left = 512
-    Top = 8
-  end
-  object tbInvalid: TADOTable
-    Connection = cnAjendam
-    CursorType = ctStatic
-    TableName = 'Verifikasi_Invalid'
-    Left = 624
-    Top = 8
-  end
-  object dsInvalid: TDataSource
-    DataSet = tbInvalid
-    Left = 680
     Top = 8
   end
 end

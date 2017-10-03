@@ -1,5 +1,7 @@
 object DataModuleAjendam: TDataModuleAjendam
-  OldCreateOrder = False
+  OldCreateOrder = True
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
   Height = 427
   Width = 776
   object frxPDFExport1: TfrxPDFExport
@@ -179,7 +181,7 @@ object DataModuleAjendam: TDataModuleAjendam
       'TMT=TMT'
       'NOASABRI=NOASABRI'
       'NPWP=NPWP')
-    DataSource = dsVerifikasiUrut
+    DataSource = dsVerifikasi
     BCDToCurrency = False
     Left = 416
     Top = 16
@@ -855,102 +857,97 @@ object DataModuleAjendam: TDataModuleAjendam
   end
   object dsHistory: TDataSource
     DataSet = tbHistory
-    Left = 104
-    Top = 152
+    Left = 80
+    Top = 160
   end
   object tbHistory: TADOTable
     Connection = cnAjendam
+    CursorType = ctStatic
     TableName = 'History'
-    Left = 56
-    Top = 152
+    Left = 16
+    Top = 160
   end
   object dsBulan: TDataSource
     DataSet = tbBulan
-    Left = 104
-    Top = 96
+    Left = 80
+    Top = 112
   end
   object tbBulan: TADOTable
     Connection = cnAjendam
+    CursorType = ctStatic
     TableName = 'Bulan'
-    Left = 56
-    Top = 96
+    Left = 16
+    Top = 112
   end
-  object dsInvalid: TDataSource
-    DataSet = tbInvalid
-    Left = 104
-    Top = 48
+  object dsVerifikasi: TDataSource
+    DataSet = tbVerifikasi
+    OnStateChange = dsVerifikasiStateChange
+    OnDataChange = dsVerifikasiDataChange
+    OnUpdateData = dsVerifikasiUpdateData
+    Left = 80
+    Top = 64
   end
-  object tbInvalid: TADOTable
-    Connection = cnAjendam
-    TableName = 'Verifikasi_Invalid'
-    Left = 56
-    Top = 48
-  end
-  object dsVerifikasiUrut: TDataSource
-    DataSet = tbVerifikasiUrut
-    Left = 104
-    Top = 8
-  end
-  object tbVerifikasiUrut: TADOTable
+  object tbVerifikasi: TADOTable
     Connection = cnAjendam
     CursorType = ctStatic
+    OnCalcFields = tbVerifikasiCalcFields
     TableName = 'Verifikasi'
-    Left = 56
-    Top = 8
-    object tbVerifikasiUrutCalcTanggalPensiun: TStringField
+    Left = 16
+    Top = 64
+    object tbVerifikasiCalcTanggalPensiun: TStringField
       FieldKind = fkCalculated
       FieldName = 'CalcTanggalPensiun'
       Calculated = True
     end
-    object tbVerifikasiUrutID: TAutoIncField
+    object tbVerifikasiID: TAutoIncField
       FieldName = 'ID'
       ReadOnly = True
     end
-    object tbVerifikasiUrutNRP: TWideStringField
+    object tbVerifikasiNRP: TWideStringField
       FieldName = 'NRP'
       Size = 15
     end
-    object tbVerifikasiUrutNama: TWideStringField
+    object tbVerifikasiNama: TWideStringField
       FieldName = 'Nama'
       Size = 50
     end
-    object tbVerifikasiUrutKode_Pangkat: TSmallintField
+    object tbVerifikasiKode_Pangkat: TSmallintField
       FieldName = 'Kode_Pangkat'
     end
-    object tbVerifikasiUrutPangkat: TWideStringField
+    object tbVerifikasiPangkat: TWideStringField
       FieldName = 'Pangkat'
       Size = 25
     end
-    object tbVerifikasiUrutKesatuan: TWideStringField
+    object tbVerifikasiKesatuan: TWideStringField
       FieldName = 'Kesatuan'
       Size = 50
     end
-    object tbVerifikasiUrutNo_SKEP: TWideStringField
+    object tbVerifikasiNo_SKEP: TWideStringField
       FieldName = 'No_SKEP'
     end
-    object tbVerifikasiUrutTanggal_Pensiun: TDateTimeField
+    object tbVerifikasiTanggal_Pensiun: TDateTimeField
       FieldName = 'Tanggal_Pensiun'
     end
-    object tbVerifikasiUrutTanggal_Pensiun_Indonesia: TWideStringField
+    object tbVerifikasiTanggal_Pensiun_Indonesia: TWideStringField
       FieldName = 'Tanggal_Pensiun_Indonesia'
       Size = 25
     end
-    object tbVerifikasiUrutBulan_Pensiun: TWideStringField
+    object tbVerifikasiBulan_Pensiun: TWideStringField
       FieldName = 'Bulan_Pensiun'
       Size = 15
     end
-    object tbVerifikasiUrutBulan_Pensiun_Bulan: TIntegerField
+    object tbVerifikasiBulan_Pensiun_Bulan: TIntegerField
       FieldName = 'Bulan_Pensiun_Bulan'
     end
-    object tbVerifikasiUrutBulan_Pensiun_Tahun: TIntegerField
+    object tbVerifikasiBulan_Pensiun_Tahun: TIntegerField
       FieldName = 'Bulan_Pensiun_Tahun'
     end
-    object tbVerifikasiUrutCalcBulanPensiun: TStringField
+    object tbVerifikasiCalcBulanPensiun: TStringField
       FieldKind = fkCalculated
       FieldName = 'CalcBulanPensiun'
       Calculated = True
     end
-    object tbVerifikasiUrutCalcKodePangkat: TIntegerField
+    object tbVerifikasiCalcKodePangkat: TIntegerField
       FieldKind = fkCalculated
       FieldName = 'CalcKodePangkat'
       Calculated = True
@@ -959,19 +956,48 @@ object DataModuleAjendam: TDataModuleAjendam
   object cnAjendam: TADOConnection
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=data\' +
-      'Ajendam.mdb;Mode=Share Deny None;Jet OLEDB:System database="";Je' +
-      't OLEDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLED' +
-      'B:Engine Type=5;Jet OLEDB:Database Locking Mode=1;Jet OLEDB:Glob' +
-      'al Partial Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;Jet O' +
-      'LEDB:New Database Password="";Jet OLEDB:Create System Database=F' +
-      'alse;Jet OLEDB:Encrypt Database=False;Jet OLEDB:Don'#39't Copy Local' +
-      'e on Compact=False;Jet OLEDB:Compact Without Replica Repair=Fals' +
-      'e;Jet OLEDB:SFP=False;'
-    CursorLocation = clUseServer
+      'Ajendam.mdb;Mode=Share Deny None;Persist Security Info=False;Jet' +
+      ' OLEDB:System database="";Jet OLEDB:Registry Path="";Jet OLEDB:D' +
+      'atabase Password="";Jet OLEDB:Engine Type=5;Jet OLEDB:Database L' +
+      'ocking Mode=1;Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Glob' +
+      'al Bulk Transactions=1;Jet OLEDB:New Database Password="";Jet OL' +
+      'EDB:Create System Database=False;Jet OLEDB:Encrypt Database=Fals' +
+      'e;Jet OLEDB:Don'#39't Copy Locale on Compact=False;Jet OLEDB:Compact' +
+      ' Without Replica Repair=False;Jet OLEDB:SFP=False;'
     LoginPrompt = False
-    Mode = cmShareDenyNone
     Provider = 'Microsoft.Jet.OLEDB.4.0'
     Left = 16
     Top = 8
+  end
+  object qrVerCount: TADOQuery
+    Connection = cnAjendam
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT Count(ID) AS Result'
+      'FROM Verifikasi;')
+    Left = 16
+    Top = 256
+  end
+  object dsVerCount: TDataSource
+    DataSet = qrVerCount
+    Left = 80
+    Top = 256
+  end
+  object qrVerInvalid: TADOQuery
+    Connection = cnAjendam
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT Count(ID) AS Result'
+      'FROM Verifikasi'
+      
+        'WHERE Verifikasi.NO_SKEP="" OR Verifikasi.Bulan_Pensiun="" OR Ve' +
+        'rifikasi.Tanggal_Pensiun=#30/12/1899#;')
+    Left = 16
+    Top = 208
+  end
+  object dsVerInvalid: TDataSource
+    DataSet = qrVerInvalid
+    Left = 80
+    Top = 208
   end
 end

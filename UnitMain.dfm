@@ -1526,6 +1526,7 @@ object FormMain: TFormMain
     Width = 89
     Height = 25
     Caption = 'Export Data'
+    Enabled = False
     TabOrder = 18
     OnClick = btnExportClick
   end
@@ -1535,6 +1536,8 @@ object FormMain: TFormMain
     Width = 89
     Height = 25
     Caption = 'Import Data'
+    Enabled = False
     TabOrder = 19
+    OnClick = btnImportClick
   end
 end

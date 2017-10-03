@@ -55,11 +55,14 @@ type
     procedure btnSearchClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnImportClick(Sender: TObject);
   private
     { Private declarations }
     procedure LoadData;
     procedure CloseData;
     procedure UpdateData;
+    procedure ExportData;
+    procedure ImportData;
     procedure GridToWord(Grid: TDBGrid; FormatNum: integer);
 
   var
@@ -74,58 +77,17 @@ var
 
 implementation
 
-uses UnitCariData, UnitDataModule;
+uses UnitCariData, UnitDataModule, UnitHistoryChooser;
 {$R *.dfm}
 
 procedure TFormMain.btnExportClick(Sender: TObject);
-var petugas: String;
-    historyID: Integer;
 begin
-  if DataModuleAjendam.tbVerifikasi.Active then
-  begin
-    repeat
-      petugas := InputBox('Export Data', 'Masukkan Nama Petugas', '');
-    until petugas <> '';
+  ExportData;
+end;
 
-    with DataModuleAjendam do
-    begin
-      tbHistory.Open;
-      tbHistory.Insert;
-      tbHistory.FieldValues['petugas'] := petugas;
-      tbHistory.FieldValues['tanggal'] := Now;
-      tbHistory.Post;
-      historyID := tbHistory.FieldByName('ID').AsInteger;
-      tbHistory.Close;
-
-      ShowMessage('new ID: ' + IntToStr(historyID));
-
-      tbVerHis.Open;
-      tbVerifikasi.First;
-      while not tbVerifikasi.Eof do
-      begin
-        tbVerHis.Insert;
-        tbVerHis.FieldValues['History_ID'] := historyID;
-        tbVerHis.FieldValues['NRP'] := tbVerifikasi.FieldByName('NRP').AsString;
-        tbVerHis.FieldValues['Nama'] := tbVerifikasi.FieldByName('Nama').AsString;
-        tbVerHis.FieldValues['Kode_Pangkat'] := tbVerifikasi.FieldByName('Kode_Pangkat').AsInteger;
-        tbVerHis.FieldValues['Pangkat'] := tbVerifikasi.FieldByName('Pangkat').AsString;
-        tbVerHis.FieldValues['Kesatuan'] := tbVerifikasi.FieldByName('Kesatuan').AsString;
-        tbVerHis.FieldValues['No_SKEP'] := tbVerifikasi.FieldByName('No_SKEP').AsString;
-        tbVerHis.FieldValues['Tanggal_Pensiun'] := tbVerifikasi.FieldByName('Tanggal_Pensiun').AsDateTime;
-        tbVerHis.FieldValues['Tanggal_Pensiun_Indonesia'] := tbVerifikasi.FieldByName('Tanggal_Pensiun_Indonesia').AsString;
-        tbVerHis.FieldValues['Bulan_Pensiun'] := tbVerifikasi.FieldByName('Bulan_Pensiun').AsString;
-        tbVerHis.FieldValues['Bulan_Pensiun_Bulan'] := tbVerifikasi.FieldByName('Bulan_Pensiun_Bulan').AsInteger;
-        tbVerHis.FieldValues['Bulan_Pensiun_Tahun'] := tbVerifikasi.FieldByName('Bulan_Pensiun_Tahun').AsInteger;
-        tbVerHis.Post;
-        tbVerifikasi.Next;
-      end;
-      tbVerHis.Close;
-    end;
-  end
-  else
-  begin
-    ShowMessage('Data masih kosong, klik Load Data terlebih dahulu.');
-  end;
+procedure TFormMain.btnImportClick(Sender: TObject);
+begin
+  ImportData;
 end;
 
 procedure TFormMain.btnLoadClick(Sender: TObject);
@@ -285,6 +247,8 @@ begin
   end;
 
   btnLoad.Caption := 'Close Data';
+  btnExport.Enabled := True;
+  btnImport.Enabled := True;
 end;
 
 procedure TFormMain.CloseData;
@@ -300,6 +264,8 @@ begin
   end;
 
   btnLoad.Caption := 'Load Data';
+  btnExport.Enabled := False;
+  btnImport.Enabled := False;
 end;
 
 procedure TFormMain.UpdateData;
@@ -322,6 +288,123 @@ begin
       end;
     except
       // do nothing
+    end;
+  end;
+end;
+
+procedure TFormMain.ExportData;
+var petugas: String;
+    historyID: Integer;
+begin
+  if DataModuleAjendam.tbVerifikasi.Active then
+  begin
+    repeat
+      petugas := InputBox('Export Data', 'Masukkan Nama Petugas', '');
+    until petugas <> '';
+
+    with DataModuleAjendam do
+    begin
+      tbHistory.Open;
+      tbHistory.Insert;
+      tbHistory.FieldValues['petugas'] := petugas;
+      tbHistory.FieldValues['tanggal'] := Now;
+      tbHistory.Post;
+      historyID := tbHistory.FieldByName('ID').AsInteger;
+      tbHistory.Close;
+
+      tbVerHis.Open;
+      tbVerifikasi.First;
+      while not tbVerifikasi.Eof do
+      begin
+        tbVerHis.Insert;
+        tbVerHis.FieldValues['History_ID'] := historyID;
+        tbVerHis.FieldValues['NRP'] := tbVerifikasi.FieldByName('NRP').AsString;
+        tbVerHis.FieldValues['Nama'] := tbVerifikasi.FieldByName('Nama').AsString;
+        tbVerHis.FieldValues['Kode_Pangkat'] := tbVerifikasi.FieldByName('Kode_Pangkat').AsInteger;
+        tbVerHis.FieldValues['Pangkat'] := tbVerifikasi.FieldByName('Pangkat').AsString;
+        tbVerHis.FieldValues['Kesatuan'] := tbVerifikasi.FieldByName('Kesatuan').AsString;
+        tbVerHis.FieldValues['No_SKEP'] := tbVerifikasi.FieldByName('No_SKEP').AsString;
+        tbVerHis.FieldValues['Tanggal_Pensiun'] := tbVerifikasi.FieldByName('Tanggal_Pensiun').AsDateTime;
+        tbVerHis.FieldValues['Tanggal_Pensiun_Indonesia'] := tbVerifikasi.FieldByName('Tanggal_Pensiun_Indonesia').AsString;
+        tbVerHis.FieldValues['Bulan_Pensiun'] := tbVerifikasi.FieldByName('Bulan_Pensiun').AsString;
+        tbVerHis.FieldValues['Bulan_Pensiun_Bulan'] := tbVerifikasi.FieldByName('Bulan_Pensiun_Bulan').AsInteger;
+        tbVerHis.FieldValues['Bulan_Pensiun_Tahun'] := tbVerifikasi.FieldByName('Bulan_Pensiun_Tahun').AsInteger;
+        tbVerHis.Post;
+        tbVerifikasi.Next;
+      end;
+      tbVerHis.Close;
+    end;
+  end
+  else
+  begin
+    ShowMessage('Data masih kosong, klik Load Data terlebih dahulu.');
+  end;
+end;
+
+procedure TFormMain.ImportData;
+var buttonSelected: Integer;
+    historyID: Integer;
+begin
+  with DataModuleAjendam do
+  begin
+    if tbVerifikasi.Active then
+    begin
+      if tbVerifikasi.RecordCount > 0 then
+      begin
+        buttonSelected := MessageDlg('Data verifikasi sudah ada, apakah ingin backup data terlebih dahulu?', mtConfirmation, mbYesNoCancel, 0);
+        if buttonSelected = mrYes then
+        begin
+          // backup data
+          ExportData;
+        end
+        else if buttonSelected = mrCancel then
+        begin
+          // abort import
+          abort;
+        end;
+      end;
+
+      // show choice
+      tbHistory.Open;
+      FormHistory.ShowModal;
+      historyID := tbHistory.FieldByName('ID').AsInteger;
+      tbHistory.Close;
+
+      // clear data
+      tbVerifikasi.First;
+      while not tbVerifikasi.Eof do
+      begin
+        tbVerifikasi.Delete;
+      end;
+
+      // import data
+      tbVerHis.Filtered := False;
+      tbVerHis.Filter := 'History_ID=' + IntToStr(historyID);
+      tbVerHis.Filtered := True;
+      tbVerHis.Open;
+      tbVerHis.First;
+      while not tbVerHis.Eof do
+      begin
+        tbVerifikasi.Insert;
+        tbVerifikasi.FieldValues['NRP'] := tbVerHis.FieldByName('NRP').AsString;
+        tbVerifikasi.FieldValues['Nama'] := tbVerHis.FieldByName('Nama').AsString;
+        tbVerifikasi.FieldValues['Kode_Pangkat'] := tbVerHis.FieldByName('Kode_Pangkat').AsInteger;
+        tbVerifikasi.FieldValues['Pangkat'] := tbVerHis.FieldByName('Pangkat').AsString;
+        tbVerifikasi.FieldValues['Kesatuan'] := tbVerHis.FieldByName('Kesatuan').AsString;
+        tbVerifikasi.FieldValues['No_SKEP'] := tbVerHis.FieldByName('No_SKEP').AsString;
+        tbVerifikasi.FieldValues['Tanggal_Pensiun'] := tbVerHis.FieldByName('Tanggal_Pensiun').AsDateTime;
+        tbVerifikasi.FieldValues['Tanggal_Pensiun_Indonesia'] := tbVerHis.FieldByName('Tanggal_Pensiun_Indonesia').AsString;
+        tbVerifikasi.FieldValues['Bulan_Pensiun'] := tbVerHis.FieldByName('Bulan_Pensiun').AsString;
+        tbVerifikasi.FieldValues['Bulan_Pensiun_Bulan'] := tbVerHis.FieldByName('Bulan_Pensiun_Bulan').AsInteger;
+        tbVerifikasi.FieldValues['Bulan_Pensiun_Tahun'] := tbVerHis.FieldByName('Bulan_Pensiun_Tahun').AsInteger;
+        tbVerifikasi.Post;
+        tbVerHis.Next;
+      end;
+      tbVerHis.Close;
+    end
+    else
+    begin
+      ShowMessage('Klik Load Data terlebih dahulu.');
     end;
   end;
 end;

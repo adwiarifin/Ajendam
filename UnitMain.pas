@@ -1,4 +1,4 @@
-unit Unit1;
+unit UnitMain;
 
 interface
 
@@ -11,8 +11,7 @@ uses
   ADODB, rxToolEdit, RXDBCtrl, jpeg;
 
 type
-  TForm1 = class(TForm)
-    dsVerifikasiUrut: TDataSource;
+  TFormMain = class(TForm)
     DBGrid1: TDBGrid;
     DBEdit1: TDBEdit;
     lblNRP: TLabel;
@@ -27,51 +26,25 @@ type
     DBEdit4: TDBEdit;
     DBEdit5: TDBEdit;
     DBNavigator1: TDBNavigator;
-    frxRTFExport1: TfrxRTFExport;
-    frxReport1: TfrxReport;
-    frxDBDataset1: TfrxDBDataset;
     Button6: TButton;
     Button7: TButton;
-    frxXLSExport1: TfrxXLSExport;
-    frxPDFExport1: TfrxPDFExport;
     Button8: TButton;
     Button9: TButton;
     btnLoad: TButton;
     btnSearch: TButton;
-    cnAjendam: TADOConnection;
-    tbVerifikasiUrut: TADOTable;
     DBText2: TDBText;
     DBDateEdit1: TDBDateEdit;
     lbInvalid: TLabel;
     DBText3: TDBText;
-    tbInvalid: TADOTable;
-    dsInvalid: TDataSource;
     Label6: TLabel;
     Image1: TImage;
     Label7: TLabel;
     Button1: TButton;
     Button2: TButton;
     DBEdit6: TDBEdit;
-    tbBulan: TADOTable;
-    dsBulan: TDataSource;
     DBLookupComboBox1: TDBLookupComboBox;
     Label8: TLabel;
     Label9: TLabel;
-    tbVerifikasiUrutCalcTanggalPensiun: TStringField;
-    tbVerifikasiUrutID: TAutoIncField;
-    tbVerifikasiUrutNRP: TWideStringField;
-    tbVerifikasiUrutNama: TWideStringField;
-    tbVerifikasiUrutKode_Pangkat: TSmallintField;
-    tbVerifikasiUrutPangkat: TWideStringField;
-    tbVerifikasiUrutKesatuan: TWideStringField;
-    tbVerifikasiUrutNo_SKEP: TWideStringField;
-    tbVerifikasiUrutTanggal_Pensiun: TDateTimeField;
-    tbVerifikasiUrutTanggal_Pensiun_Indonesia: TWideStringField;
-    tbVerifikasiUrutBulan_Pensiun: TWideStringField;
-    tbVerifikasiUrutBulan_Pensiun_Bulan: TIntegerField;
-    tbVerifikasiUrutBulan_Pensiun_Tahun: TIntegerField;
-    tbVerifikasiUrutCalcBulanPensiun: TStringField;
-    tbVerifikasiUrutCalcKodePangkat: TIntegerField;
     btnExport: TButton;
     btnImport: TButton;
     procedure Button6Click(Sender: TObject);
@@ -87,6 +60,7 @@ type
     procedure dsVerifikasiUrutDataChange(Sender: TObject; Field: TField);
     procedure tbVerifikasiUrutCalcFields(DataSet: TDataSet);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnExportClick(Sender: TObject);
   private
     { Private declarations }
     procedure LoadData;
@@ -105,16 +79,26 @@ type
   end;
 
 var
-  Form1: TForm1;
+  FormMain: TFormMain;
 
 implementation
 
-uses Unit2;
+uses Unit2, DataModule;
 {$R *.dfm}
 
-procedure TForm1.btnLoadClick(Sender: TObject);
+procedure TFormMain.btnExportClick(Sender: TObject);
+var petugas: String;
 begin
-  if Button10.Caption = 'Load Data' then
+  repeat
+    petugas := InputBox('Export Data', 'Masukkan Nama Petugas', '');
+  until petugas <> '';
+
+
+end;
+
+procedure TFormMain.btnLoadClick(Sender: TObject);
+begin
+  if btnLoad.Caption = 'Load Data' then
   begin
     LoadData;
   end
@@ -124,13 +108,13 @@ begin
   end;
 end;
 
-procedure TForm1.btnSearchClick(Sender: TObject);
+procedure TFormMain.btnSearchClick(Sender: TObject);
 begin
   CloseData;
   Form2.show;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TFormMain.Button1Click(Sender: TObject);
 var WordApp, Doc: Variant;
 begin
   WordApp := CreateOleObject('Word.Application');
@@ -138,7 +122,7 @@ begin
   Doc := WordApp.Documents.Open(GetCurrentDir + '\1_VERI BANDUNG.doc');
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TFormMain.Button2Click(Sender: TObject);
 var WordApp, Doc: Variant;
 begin
   WordApp := CreateOleObject('Word.Application');
@@ -146,18 +130,18 @@ begin
   Doc := WordApp.Documents.Open(GetCurrentDir + '\2_VERI DOSIR.doc');
 end;
 
-procedure TForm1.Button6Click(Sender: TObject);
+procedure TFormMain.Button6Click(Sender: TObject);
 begin
   frxReport1.PrepareReport(true);
   frxReport1.Export(frxPDFExport1);
 end;
 
-procedure TForm1.Button7Click(Sender: TObject);
+procedure TFormMain.Button7Click(Sender: TObject);
 begin
   frxReport1.ShowReport(true);
 end;
 
-procedure TForm1.Button8Click(Sender: TObject);
+procedure TFormMain.Button8Click(Sender: TObject);
 var
   i, x: integer;
   sfile: string;
@@ -203,12 +187,12 @@ begin
   end
 end;
 
-procedure TForm1.Button9Click(Sender: TObject);
+procedure TFormMain.Button9Click(Sender: TObject);
 begin
   GridToWord(DBGrid1, 42);
 end;
 
-procedure TForm1.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
+procedure TFormMain.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
 begin
   case Button of
     nbFirst: ;
@@ -224,23 +208,23 @@ begin
   end;
 end;
 
-procedure TForm1.dsVerifikasiUrutDataChange(Sender: TObject; Field: TField);
+procedure TFormMain.dsVerifikasiUrutDataChange(Sender: TObject; Field: TField);
 begin
   RefreshInvalid;
   Label9.Caption := IntToStr(tbVerifikasiUrut.RecordCount);
 end;
 
-procedure TForm1.dsVerifikasiUrutUpdateData(Sender: TObject);
+procedure TFormMain.dsVerifikasiUrutUpdateData(Sender: TObject);
 begin
   RefreshInvalid;
 end;
 
-procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   CloseData;
 end;
 
-procedure TForm1.GridToWord(Grid: TDBGrid; FormatNum: integer);
+procedure TFormMain.GridToWord(Grid: TDBGrid; FormatNum: integer);
 var
   x: integer;
   y: integer;
@@ -281,17 +265,17 @@ begin
   Word.ActiveDocument.Range.Tables.Item(1).UpdateAutoFormat;
 end;
 
-procedure TForm1.LoadData;
+procedure TFormMain.LoadData;
 begin
   cnAjendam.Open('', '');
   tbBulan.Open;
   tbInvalid.Open;
   tbVerifikasiUrut.Open;
 
-  Button10.Caption := 'Close Data';
+  btnLoad.Caption := 'Close Data';
 end;
 
-procedure TForm1.CloseData;
+procedure TFormMain.CloseData;
 begin
   UpdateData;
 
@@ -301,10 +285,10 @@ begin
 
   cnAjendam.Close;
 
-  Button10.Caption := 'Load Data';
+  btnLoad.Caption := 'Load Data';
 end;
 
-procedure TForm1.UpdateData;
+procedure TFormMain.UpdateData;
 begin
   try
     if tbVerifikasiUrut.Active then
@@ -325,20 +309,20 @@ begin
   end;
 end;
 
-procedure TForm1.RefreshInvalid;
+procedure TFormMain.RefreshInvalid;
 begin
   tbInvalid.Close;
   tbInvalid.Open;
 end;
 
-procedure TForm1.tbVerifikasiUrutCalcFields(DataSet: TDataSet);
+procedure TFormMain.tbVerifikasiUrutCalcFields(DataSet: TDataSet);
 begin
   tbVerifikasiUrut.FieldValues['CalcTanggalPensiun'] := ChangeDatePensToString;
   tbVerifikasiUrut.FieldValues['CalcBulanPensiun'] := ChangeMonthPensToString;
   tbVerifikasiUrut.FieldValues['CalcKodePangkat'] := ChangePangkatToInt;
 end;
 
-function TForm1.ChangeDatePensToString : String;
+function TFormMain.ChangeDatePensToString : String;
 var myYear, myMonth, myDay: Word;
     tdt: TDateTime;
     idMonth: String;
@@ -362,7 +346,7 @@ begin
   Result := IntToStr(myDay) + ' ' + idMonth + ' ' + IntToStr(myYear);
 end;
 
-function TForm1.ChangeMonthPensToString;
+function TFormMain.ChangeMonthPensToString;
 var sBulan, sTahun: String;
     iBulan, iTahun: Integer;
 begin
@@ -386,7 +370,7 @@ begin
   Result := sBulan + ' ' + sTahun;
 end;
 
-function TForm1.ChangePangkatToInt;
+function TFormMain.ChangePangkatToInt;
 var sPangkat: String; iPangkat: Integer;
 begin
   sPangkat := tbVerifikasiUrut.FieldByName('Pangkat').AsString;

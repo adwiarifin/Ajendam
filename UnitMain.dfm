@@ -1452,16 +1452,16 @@ object FormMain: TFormMain
   object btnLoad: TButton
     Left = 8
     Top = 239
-    Width = 89
+    Width = 81
     Height = 25
     Caption = 'Load Data'
     TabOrder = 11
     OnClick = btnLoadClick
   end
   object btnSearch: TButton
-    Left = 103
+    Left = 95
     Top = 239
-    Width = 89
+    Width = 82
     Height = 25
     Caption = 'Cari Data DBF'
     TabOrder = 12
@@ -1521,9 +1521,9 @@ object FormMain: TFormMain
     TabOrder = 17
   end
   object btnExport: TButton
-    Left = 198
+    Left = 183
     Top = 239
-    Width = 89
+    Width = 78
     Height = 25
     Caption = 'Export Data'
     Enabled = False
@@ -1531,9 +1531,9 @@ object FormMain: TFormMain
     OnClick = btnExportClick
   end
   object btnImport: TButton
-    Left = 293
+    Left = 267
     Top = 239
-    Width = 89
+    Width = 78
     Height = 25
     Caption = 'Import Data'
     Enabled = False
@@ -1541,13 +1541,22 @@ object FormMain: TFormMain
     OnClick = btnImportClick
   end
   object btnClear: TButton
-    Left = 388
+    Left = 351
     Top = 239
-    Width = 89
+    Width = 78
     Height = 25
     Caption = 'Clear Data'
     Enabled = False
     TabOrder = 20
     OnClick = btnClearClick
+  end
+  object btnDeleteHistory: TButton
+    Left = 435
+    Top = 240
+    Width = 75
+    Height = 25
+    Caption = 'Delete History'
+    TabOrder = 21
+    OnClick = btnDeleteHistoryClick
   end
 end

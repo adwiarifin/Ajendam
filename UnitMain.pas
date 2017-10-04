@@ -46,6 +46,7 @@ type
     btnImport: TButton;
     DBText1: TDBText;
     btnClear: TButton;
+    btnDeleteHistory: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
@@ -58,6 +59,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnImportClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
+    procedure btnDeleteHistoryClick(Sender: TObject);
   private
     { Private declarations }
     procedure LoadData;
@@ -65,6 +67,7 @@ type
     procedure UpdateData;
     procedure ExportData;
     procedure ImportData;
+    procedure DeleteHistory;
     procedure GridToWord(Grid: TDBGrid; FormatNum: integer);
 
   var
@@ -92,6 +95,11 @@ begin
       tbVerifikasi.Delete;
     end;
   end;
+end;
+
+procedure TFormMain.btnDeleteHistoryClick(Sender: TObject);
+begin
+  DeleteHistory;
 end;
 
 procedure TFormMain.btnExportClick(Sender: TObject);
@@ -386,41 +394,72 @@ begin
       historyID := tbHistory.FieldByName('ID').AsInteger;
       tbHistory.Close;
 
-      // clear data
-      tbVerifikasi.First;
-      while not tbVerifikasi.Eof do
+      if FormHistory.Result = 1 then
       begin
-        tbVerifikasi.Delete;
-      end;
+        // clear data
+        tbVerifikasi.First;
+        while not tbVerifikasi.Eof do
+        begin
+          tbVerifikasi.Delete;
+        end;
 
-      // import data
-      tbVerHis.Filtered := False;
-      tbVerHis.Filter := 'History_ID=' + IntToStr(historyID);
-      tbVerHis.Filtered := True;
-      tbVerHis.Open;
-      tbVerHis.First;
-      while not tbVerHis.Eof do
-      begin
-        tbVerifikasi.Insert;
-        tbVerifikasi.FieldValues['NRP'] := tbVerHis.FieldByName('NRP').AsString;
-        tbVerifikasi.FieldValues['Nama'] := tbVerHis.FieldByName('Nama').AsString;
-        tbVerifikasi.FieldValues['Kode_Pangkat'] := tbVerHis.FieldByName('Kode_Pangkat').AsInteger;
-        tbVerifikasi.FieldValues['Pangkat'] := tbVerHis.FieldByName('Pangkat').AsString;
-        tbVerifikasi.FieldValues['Kesatuan'] := tbVerHis.FieldByName('Kesatuan').AsString;
-        tbVerifikasi.FieldValues['No_SKEP'] := tbVerHis.FieldByName('No_SKEP').AsString;
-        tbVerifikasi.FieldValues['Tanggal_Pensiun'] := tbVerHis.FieldByName('Tanggal_Pensiun').AsDateTime;
-        tbVerifikasi.FieldValues['Tanggal_Pensiun_Indonesia'] := tbVerHis.FieldByName('Tanggal_Pensiun_Indonesia').AsString;
-        tbVerifikasi.FieldValues['Bulan_Pensiun'] := tbVerHis.FieldByName('Bulan_Pensiun').AsString;
-        tbVerifikasi.FieldValues['Bulan_Pensiun_Bulan'] := tbVerHis.FieldByName('Bulan_Pensiun_Bulan').AsInteger;
-        tbVerifikasi.FieldValues['Bulan_Pensiun_Tahun'] := tbVerHis.FieldByName('Bulan_Pensiun_Tahun').AsInteger;
-        tbVerifikasi.Post;
-        tbVerHis.Next;
+        // import data
+        tbVerHis.Filtered := False;
+        tbVerHis.Filter := 'History_ID=' + IntToStr(historyID);
+        tbVerHis.Filtered := True;
+        tbVerHis.Open;
+        tbVerHis.First;
+        while not tbVerHis.Eof do
+        begin
+          tbVerifikasi.Insert;
+          tbVerifikasi.FieldValues['NRP'] := tbVerHis.FieldByName('NRP').AsString;
+          tbVerifikasi.FieldValues['Nama'] := tbVerHis.FieldByName('Nama').AsString;
+          tbVerifikasi.FieldValues['Kode_Pangkat'] := tbVerHis.FieldByName('Kode_Pangkat').AsInteger;
+          tbVerifikasi.FieldValues['Pangkat'] := tbVerHis.FieldByName('Pangkat').AsString;
+          tbVerifikasi.FieldValues['Kesatuan'] := tbVerHis.FieldByName('Kesatuan').AsString;
+          tbVerifikasi.FieldValues['No_SKEP'] := tbVerHis.FieldByName('No_SKEP').AsString;
+          tbVerifikasi.FieldValues['Tanggal_Pensiun'] := tbVerHis.FieldByName('Tanggal_Pensiun').AsDateTime;
+          tbVerifikasi.FieldValues['Tanggal_Pensiun_Indonesia'] := tbVerHis.FieldByName('Tanggal_Pensiun_Indonesia').AsString;
+          tbVerifikasi.FieldValues['Bulan_Pensiun'] := tbVerHis.FieldByName('Bulan_Pensiun').AsString;
+          tbVerifikasi.FieldValues['Bulan_Pensiun_Bulan'] := tbVerHis.FieldByName('Bulan_Pensiun_Bulan').AsInteger;
+          tbVerifikasi.FieldValues['Bulan_Pensiun_Tahun'] := tbVerHis.FieldByName('Bulan_Pensiun_Tahun').AsInteger;
+          tbVerifikasi.Post;
+          tbVerHis.Next;
+        end;
+        tbVerHis.Close;
       end;
-      tbVerHis.Close;
     end
     else
     begin
       ShowMessage('Klik Load Data terlebih dahulu.');
+    end;
+  end;
+end;
+
+procedure TFormMain.DeleteHistory;
+var historyID: Integer;
+    exec: Integer;
+begin
+  with DataModuleAjendam do
+  begin
+    // show choice
+    tbHistory.Open;
+    FormHistory.ShowModal;
+    historyID := tbHistory.FieldByName('ID').AsInteger;
+    tbHistory.Close;
+
+    if FormHistory.Result = 1 then
+    begin
+      // sql for deleting
+      qrDML.Active := False;
+      qrDML.SQL.Text := 'DELETE FROM VerifikasiHistory WHERE History_ID=' + IntToStr(historyID);
+      exec := qrDML.ExecSQL;
+      qrDML.Active := False;
+      qrDML.SQL.Text := 'DELETE FROM History WHERE ID=' + IntToStr(historyID);
+      qrDML.ExecSQL;
+
+      // info
+      showMessage('Data telah berhasil dihapus');
     end;
   end;
 end;

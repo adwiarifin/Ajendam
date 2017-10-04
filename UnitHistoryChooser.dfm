@@ -1,6 +1,7 @@
 object FormHistory: TFormHistory
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Pilih History'
   ClientHeight = 249
@@ -13,6 +14,7 @@ object FormHistory: TFormHistory
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object btnOk: TButton

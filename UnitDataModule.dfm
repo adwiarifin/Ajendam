@@ -1013,4 +1013,10 @@ object DataModuleAjendam: TDataModuleAjendam
     Left = 80
     Top = 216
   end
+  object qrDML: TADOQuery
+    Connection = cnAjendam
+    Parameters = <>
+    Left = 16
+    Top = 376
+  end
 end

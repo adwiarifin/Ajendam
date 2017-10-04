@@ -11,10 +11,12 @@ type
     btnOk: TButton;
     DBGrid1: TDBGrid;
     procedure btnOkClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    Result: Integer;
   end;
 
 var
@@ -28,7 +30,13 @@ uses UnitDataModule;
 
 procedure TFormHistory.btnOkClick(Sender: TObject);
 begin
+  Result := 1;
   Close;
+end;
+
+procedure TFormHistory.FormShow(Sender: TObject);
+begin
+  Result := 0;
 end;
 
 end.
